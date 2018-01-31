@@ -35,7 +35,7 @@ def parse_disposition_data_by_date_task(isoformat_date):
             return date
     except EnvironmentError as err:
         # error reading the disposition data file or attribute names data file
-        raise
+        print("Error: Unable to read {} disposition data file".format(date))
     except Exception as err:
         # other error
         raise
@@ -60,7 +60,7 @@ def download_disposition_report_by_date_task(isoformat_date):
         raise
     except OSError as err:
         # file not found or error creating directory
-        raise
+        print("File Not Found: {} disposition data file".format(date))
     except Exception as err:
         # other error
         raise
@@ -79,7 +79,7 @@ def delete_disposition_report_by_date_task(isoformat_date):
             return date
     except OSError as err:
         # unable to delete
-        raise
+        print("Error: Unable to delete {} disposition data file".format(date))
     except Exception as err:
         # other error
         raise
@@ -98,7 +98,7 @@ def parse_filing_data_by_date_task(isoformat_date):
             return date
     except EnvironmentError as err:
         # error reading the disposition data file or attribute names data file
-        raise
+        print("Error: Unable to read {} filing data file".format(date))
     except Exception as err:
         # other error
         raise
@@ -123,7 +123,7 @@ def download_filing_report_by_date_task(isoformat_date):
         raise
     except OSError as err:
         # file not found or error creating directory
-        raise
+        print("File Not Found: {} filing data file".format(date))
     except Exception as err:
         # other error
         raise
@@ -142,7 +142,7 @@ def delete_filing_report_by_date_task(isoformat_date):
             return date
     except OSError as err:
         # unable to delete
-        raise
+        print("Error: Unable to delete {} filing data file".format(date))
     except Exception as err:
         # other error
         raise

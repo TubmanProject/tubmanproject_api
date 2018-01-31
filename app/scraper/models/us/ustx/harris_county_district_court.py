@@ -232,7 +232,10 @@ class HarrisCountyDistrictCourtScraper(object):
                         disposition_record[key] = datetime.datetime.max
                 elif 'bond_amount' in key:
                     # only bond amount is an integer
-                    disposition_record[key] = int(val.rstrip())
+                    try:
+                        disposition_record[key] = int(val.rstrip())
+                    except ValueError:
+                        disposition_record[key] = val.rstrip()
                 else:
                     # everything else is a string
                     disposition_record[key] = val.rstrip()
@@ -292,7 +295,10 @@ class HarrisCountyDistrictCourtScraper(object):
                         filing_record[key] = datetime.datetime.max
                 elif 'bond_amount' in key:
                     # only bond amount is an integer
-                    filing_record[key] = int(val.rstrip())
+                    try:
+                        filing_record[key] = int(val.rstrip())
+                    except ValueError:
+                        filing_record[key] = val.rstrip()
                 else:
                     # everything else is a string
                     filing_record[key] = val.rstrip()
