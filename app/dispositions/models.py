@@ -356,10 +356,10 @@ class Dispositions(object):
 
         # build the query dict
         if not request_params:
-            cursor = db.denormalized_dispositions_view.find(query,
-                                                            limit=1000000,
-                                                            batch_size=10000)
-            metadata = {'limit': 1000000, 'batch_size': 10000}
+            cursor = db.denormalized_dispositions_view.find(filter=query,
+                                                            limit=100,
+                                                            batch_size=100)
+            metadata = {'limit': 100, 'batch_size': 100}
             return cursor, metadata
 
         for key, val in request_params.items():
@@ -403,12 +403,12 @@ class Dispositions(object):
 
         # limit
         try:
-            limit = int(request_params.get('limit', 1000000))
+            limit = int(request_params.get('limit', 100))
         except ValueError as err:
             error = {
                 'message': ('Invalid Parameter: '
                             'The "limit" parameter "{}" is not the correct format. '
-                            'An integer should be supplied.').format(request_params.get('limit', 10000)),
+                            'An integer should be supplied.').format(request_params.get('limit', 100)),
                 'sys_message': str(err)
             }
             error = json.dumps(error)
@@ -416,18 +416,21 @@ class Dispositions(object):
 
         # batch size
         try:
-            batch_size = int(request_params.get('batch_size', 10000))
+            batch_size = int(request_params.get('batch_size', 100))
         except ValueError as err:
             error = {
                 'message': ('Invalid Parameter: '
                             'The "batch_size" parameter "{}" is not the correct format. '
-                            'An integer should be supplied.').format(request_params.get('batch_size', 10000)),
+                            'An integer should be supplied.').format(request_params.get('batch_size', 100)),
                 'sys_message': str(err)
             }
             error = json.dumps(error)
             raise ValueError(error) from err
 
-        cursor = db.denormalized_dispositions_view.find(query,
+        if batch_size > limit:
+            batch_size = limit
+
+        cursor = db.denormalized_dispositions_view.find(filter=query,
                                                         limit=limit,
                                                         projection=projection,
                                                         batch_size=batch_size)

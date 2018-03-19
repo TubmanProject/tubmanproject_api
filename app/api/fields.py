@@ -63,7 +63,6 @@ def get_field_data(field):
                                                 type='Not Found',
                                                 code=404)
         else:
-            redis = current_app.redis
             p_string = redis.get('{}_{}'.format(encoded_full_path, 1))
             if p_string is not None:
                 data = pickle.loads(p_string)
@@ -100,7 +99,7 @@ def get_field_data(field):
 
     try:
         # total
-        total_docs = cursor.count()
+        total_docs = cursor.count(with_limit_and_skip=True)
 
         # https://stackoverflow.com/questions/14822184/is-there-a-ceiling-equivalent-of-operator-in-python
         total_batches = -(-total_docs//metadata['batch_size'])  # upside-down floor divsion

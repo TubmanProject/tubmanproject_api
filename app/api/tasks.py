@@ -32,7 +32,7 @@ def cache_mongodb_request(model, request_args, encoded_full_path=None, batch_siz
         cursor, metadata = model.find(request_args)
 
         # total
-        total_docs = cursor.count()
+        total_docs = cursor.count(with_limit_and_skip=True)
 
         # determine docs to skip
         skipped = batch_size * (batch - 1)
